@@ -1,0 +1,4 @@
+*creds*
+*.tsv
+.cache
+__pycache__
