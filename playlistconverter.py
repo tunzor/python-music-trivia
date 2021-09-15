@@ -56,9 +56,11 @@ for track in playlist_info['tracks']['items']:
 
 playlist_renamed = playlist_info['name'].lower().replace(" ", "_")
 
+random.shuffle(tracks)
+
 with open(f"{playlist_renamed}.tsv", 'w') as f:
     for t in tracks:
-        f.write(f"{t[0]}\t{t[1]}\t{t[2]}\t0\t3")
+        f.write(f"{t[0]}\t{t[1]}\t{t[2]}\t0\t3\tCATEGORY")
         f.write("\n")
 
 print(f"\nSuccessfully wrote track info to [{playlist_renamed}.tsv] with default start point of 0 seconds and default duration of 3 seconds.\n\nReplace each 0 with the point where you'd like the snippet to start playing (start point) and the each 3 with how long you'd like the snippet to play for from that start point (duration).")
