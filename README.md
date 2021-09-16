@@ -44,7 +44,7 @@ The name of the file will be the playlist name in lowercase with spaces replaced
 ### `.tsv` format
 |Track ID|Track Name|Snippet Start Point|Snippet Duration|Category|
 |--|--|--|--|--|
-|Pre-populated from playlist|Pre-populated from playlist|default: `0`|defaults: `3`|defaults to `CATEGORY`|
+|Pre-populated from playlist|Pre-populated from playlist|default: `0`|defaults: `3`|default: `CATEGORY`|
 
 You only need to update the snippet start point, duration, and category for each track.
 
