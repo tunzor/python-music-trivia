@@ -11,7 +11,7 @@ Generate a file from a Spotify playlist, enter the start point and duration of e
     export SPOTIPY_CLIENT_SECRET=<SPOTIFY_CLIENT_SECRET>
     export SPOTIPY_REDIRECT_URI=http://localhost
     ```
-- Install the dependencies with
+- Install the dependencies.
     ```
     pip install -r requirements.txt
     ```
@@ -59,13 +59,13 @@ Categories are case-sensitive and the app will output each unique one on a diffe
 A convenience file if you want to track player's points. Import it into a spreadsheet editor and add/delete columns for players as necessary. 
 
 ## `app.py` usage
-The `.tsv` file needs to be passed in as an environment variable with the `flask` command:
+The `.tsv` file needs to be passed in as an environment variable with the `flask` command>
 ```
 TSV_FILE=<YOUR_FILE>.tsv flask run
 ```
 The web app can then be viewed on `http://localhost:5000`.
 
-`.tsv` file can be pathed to if it's not in the same directory as `app.py`:
+The track info `.tsv` file can be pathed to if it's not in the same directory as `app.py`.
 ```
 TSV_FILE=examples/mix1.tsv flask run
 
