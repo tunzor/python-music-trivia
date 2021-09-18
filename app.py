@@ -161,7 +161,7 @@ def shuffle_play(id):
     except:
         return """
         <p>Oops. Spotify needs to be open on a device before this will work.</p>
-        <p>Click <a href='https://open.spotify.com/track/2d7139N7CJ9eJmGVE42Y44?si=94e5a32190fb45d2' target=_blank>here</a> to open Spotify in another browser tab and press the play button to activate the device for playback.</p>
+        <p>Click <a href='https://open.spotify.com/track/2d7139N7CJ9eJmGVE42Y44?si=94e5a32190fb45d2' target=_blank>here</a> to open Spotify in another browser tab and press the play button to activate the device for playback.<br/><b>Keep the Spotify tab open</b>.</p>
         <p>Then go back to the <a href='/'>home page</a> and try again.</p>
         """
     return redirect('/')

@@ -59,8 +59,15 @@ Categories are case-sensitive and the app will output each unique one on a diffe
 A convenience file if you want to track player's points. Import it into a spreadsheet editor and add/delete columns for players as necessary. 
 
 ## `app.py` usage
-The `.tsv` file needs to be in the same directory as `app.py` and passed in as an environment variable with the `flask` command:
+The `.tsv` file needs to be passed in as an environment variable with the `flask` command:
 ```
 TSV_FILE=<YOUR_FILE>.tsv flask run
 ```
-The app can then be viewed on `http://localhost:5000`.
+The web app can then be viewed on `http://localhost:5000`.
+
+`.tsv` file can be pathed to if it's not in the same directory as `app.py`:
+```
+TSV_FILE=examples/mix1.tsv flask run
+
+TSV_FILE=../mix1.tsv flask run
+```
