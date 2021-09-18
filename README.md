@@ -21,10 +21,10 @@ Generate a file from a Spotify playlist, enter the start point and duration of e
     ```
 
 ## `playlistconverter.py` usage
-The converter tool will take in a Spotify playlist and create a tab-separated file (`.tsv`) in the format required by the app.
+The converter tool will take in a Spotify playlist (full URL or ID) and create two tab-separated (`.tsv`) files: a track info file formatted for the web app and an answer file that can be loaded into a spreadsheet editor (Excel, Google Sheets, etc.) for tracking player points.
 ```
 $ python playlistconverter.py -h
-usage: playlistconverter.py [-h] [--url URL] [--id ID]
+usage: playlistconverter.py [-h] [--url URL] [--id ID] [--shuffle]
 
 Convert a spotify playlist into a csv file for loading into the pyspotify music trivia.
 
@@ -32,6 +32,7 @@ optional arguments:
   -h, --help  show this help message and exit
   --url URL   Full URL to playlist.
   --id ID     Playlist ID. Portion of the URL after the spotify.com/playlist/{COPY_THIS_PORTION}
+  --shuffle   (Optional) Shuffle the order of the tracks in the output file. Add it to shuffle tracks, omit it to maintain playlist track order.
 
 # With full playlist URL
 python playlistconverter.py --url https://open.spotify.com/playlist/37i9dQZF1DX1MUPbVKMgJE
@@ -41,7 +42,7 @@ python playlistconverter.py --id 37i9dQZF1DX1MUPbVKMgJE
 ```
 The name of the file will be the playlist name in lowercase with spaces replaced by underscores.
 
-### `.tsv` format
+### `<playlist_name>.tsv` format
 |Track ID|Track Name|Snippet Start Point|Snippet Duration|Category|
 |--|--|--|--|--|
 |Pre-populated from playlist|Pre-populated from playlist|default: `0`|defaults: `3`|default: `CATEGORY`|
@@ -49,6 +50,13 @@ The name of the file will be the playlist name in lowercase with spaces replaced
 You only need to update the snippet start point, duration, and category for each track.
 
 Categories are case-sensitive and the app will output each unique one on a different line with the tracks that use it.
+
+### `<playlist_name>_answers.tsv` format
+|Clue Number|Track Name|Artist|Player 1 Points|Player 2 Points|Player 3 Points|
+|--|--|--|--|--|--|
+|Pre-populated from playlist|Pre-populated from playlist|Pre-populated from playlist|default: empty|default: empty|default: empty|
+
+A convenience file if you want to track player's points. Import it into a spreadsheet editor and add/delete columns for players as necessary. 
 
 ## `app.py` usage
 The `.tsv` file needs to be in the same directory as `app.py` and passed in as an environment variable with the `flask` command:
