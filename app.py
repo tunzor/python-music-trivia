@@ -122,7 +122,7 @@ def generate_html():
     return output
 
 @app.route('/')
-def hello_world():
+def webapp():
     output = ("""
     <html>
     <head>
