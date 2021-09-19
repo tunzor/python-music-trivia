@@ -119,6 +119,17 @@ def generate_html():
     #     for i in range(0,max_cat_length):
     #         pass
 
+    output = ""
+    for cat in unique_cats:  
+        it = 1
+        output += "<div class='col text-center' style='height:60px;'><h4 class='h-100 overflow-hidden'>" + cat + "</h4><div class='dropdown-divider'></div>"
+        for track in tsv_clues:
+            if track[5] == cat:
+                output += f"""
+                    <p class="bg-light" id="clue{it}"><a class="dropdown-item" onclick="toggleView('clue{it}')" href="/shuffleplay/{it}">Clue {it}</a></p>
+                """
+            it += 1
+        output += "</div>"
     return output
 
 @app.route('/')
@@ -129,10 +140,9 @@ def webapp():
     <title>Python Music Trivia - """ + playlist_title + """</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <style>
-        /* Table row/col transposition
-        https://siongui.github.io/2017/04/16/css-only-transpose-html-table/ */
-        //tr { display: block; float: left; }
-        //th, td { display: block; }
+        a:focus {
+            background: #c2ffbd !important;
+        }
     </style>
     <script>
     function toggleView(id) {
@@ -149,10 +159,10 @@ def webapp():
     <h1>Playlist: """ + playlist_title + """</h1>
     <p>Click on any clue to start playback. Clue links are disabled until playback is finished.</p>
     <p>The currently playing clue will be highlighted in <span style="background-color: #c2ffbd;">green</span>.</p>
-    <table class="table table-bordered">
+    <div class="container"><div class="row align-items-start">
     """ + generate_html() +
     """
-    </table>
+    </div></div>
     </body>
     </html>    
     """)
