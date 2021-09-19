@@ -11,7 +11,7 @@ Points for identifying either the song, artist, or both OR only for identifying 
 |The Band, The|Artists/Bands whose name starts with "The".
 
 ## Complete the lyric
-Points for finishing the line of the lyric in the snippet.
+Points for finishing the line of the lyric in the clue.
 
 ## Guess the connection
-Points for identifying how the songs in a category are related.
+Points for identifying how the clues in a category are related.
