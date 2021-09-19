@@ -20,6 +20,7 @@ tracks = []
 current_track = ""
 
 tsv_file = open(os.environ.get("TSV_FILE"))
+playlist_title = Path(os.path.basename(tsv_file.name)).stem
 tsv_reader = csv.reader(tsv_file, delimiter="\t")
 tsv_clues = []
 
@@ -31,24 +32,19 @@ for track in tsv_clues:
     if track[5] not in unique_cats:
         unique_cats.append(track[5])
 
-print(f"Categories: {unique_cats}")
+# Not used by might be useful later
+clues_by_cat = {} 
+for clue in tsv_clues:
+    if clue[5] in clues_by_cat:
+        clues_by_cat[clue[5]].append(clue)
+    else:
+        clues_by_cat[clue[5]] = []
+        clues_by_cat[clue[5]].append(clue)
 
-# print(tsv_clues)
-
-def generate_html():
-    output = ""
-    for cat in unique_cats:  
-        it = 1
-        output += "<tr>"
-        output += "<td>" + cat + "</td>"
-        for track in tsv_clues:
-            if track[5] == cat:
-                output += f"""
-                    <td><a onclick="toggleView('clue{it}playing')" href="/shuffleplay/{it}">Clue {it}</a><span id="clue{it}playing" style="color: green; display:none">PLAYING...</span>
-                """
-            it += 1
-        output += "</tr>"
-    return output
+max_cat_length = 0
+for cat in clues_by_cat:
+    if len(clues_by_cat[cat]) > max_cat_length:
+        max_cat_length = len(clues_by_cat[cat])
 
 def get_playlist_tracks(playlist_id):
     pl_id = f"spotify:playlist:{playlist_id}"
@@ -99,45 +95,49 @@ def play_track_for_x_time(track, time, start_point=-1):
     sleep(playback_length)
     sp.pause_playback()
 
-def do_stuff():
-    # Print playlist
-    # Thin Lizzy
-    playlist_id = "7aJUr1d8OEwNfzOYvjJPVU"
-    get_playlist_tracks(playlist_id)
+def generate_html():
+    output = ""
+    for cat in unique_cats:  
+        it = 1
+        output += "<tr>"
+        output += "<td>" + cat + "</td>"
+        for track in tsv_clues:
+            if track[5] == cat:
+                output += f"""
+                    <td id="clue{it}"><a onclick="toggleView('clue{it}')" href="/shuffleplay/{it}">Clue {it}</a>
+                """
+            it += 1
+        output += "</tr>"
 
-    random.shuffle(tracks)
-    play_track_for_x_time(tracks[0], 5, 10)
+    # output = ""
+    # output += "<tr>"
+    # for cat in unique_cats:
+    #     output += "<td>" + cat + "</td>"
+
+    # for cat in unique_cats:
+    #     track_list = clues_by_cat[cat]
+    #     for i in range(0,max_cat_length):
+    #         pass
+
+    return output
 
 @app.route('/')
 def hello_world():
     output = ("""
     <html>
     <head>
+    <title>Python Music Trivia - """ + playlist_title + """</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <style>
-    td, th {
-    border: 1px solid #ddd;
-    padding: 8px;
-    }
-
-    tr:nth-child(even){background-color: #f2f2f2;}
-
-    th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #04AA6D;
-    color: white;
-    }
+        /* Table row/col transposition
+        https://siongui.github.io/2017/04/16/css-only-transpose-html-table/ */
+        //tr { display: block; float: left; }
+        //th, td { display: block; }
     </style>
     <script>
     function toggleView(id) {
         var x = document.getElementById(id);
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
+        x.style.backgroundColor = "#c2ffbd";
         var anchors = document.getElementsByTagName("a");
         for (var i = 0; i < anchors.length; i++) {
             anchors[i].onclick = function() {return false;};
@@ -146,9 +146,10 @@ def hello_world():
     </script>
     </head>
     <body>
-    <h1>Playlist: """ + Path(os.path.basename(tsv_file.name)).stem + """</h1>
+    <h1>Playlist: """ + playlist_title + """</h1>
     <p>Click on any clue to start playback. Clue links are disabled until playback is finished.</p>
-    <table>
+    <p>The currently playing clue will be highlighted in <span style="background-color: #c2ffbd;">green</span>.</p>
+    <table class="table table-bordered">
     """ + generate_html() +
     """
     </table>
