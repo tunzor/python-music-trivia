@@ -93,6 +93,7 @@ def play_track_for_x_time(track, time, start_point=-1):
         sys.exit()
     
     sleep(playback_length)
+    print("Stopping playback")
     sp.pause_playback()
 
 def generate_html():

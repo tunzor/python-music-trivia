@@ -72,7 +72,7 @@ with open(f"{playlist_answers}.tsv", 'w', encoding='utf-8') as f:
     f.write("Clue\tName\tArtist\tPlayer 1 Points\tPlayer 2 Points\tPlayer 3 Points")
     f.write("\n")
     for idx, t in enumerate(tracks):
-        f.write(f"{idx}\t{t[1]}\t{t[2]}")
+        f.write(f"{idx + 1}\t{t[1]}\t{t[2]}")
         f.write("\n")
 
 print(f"\n\nSuccessfully wrote answer file to [{playlist_answers}.tsv].\n\nOpen it in a spreadsheet editor to keep track of how many points each player gets for each clue. Add more player columns as necessary.")
