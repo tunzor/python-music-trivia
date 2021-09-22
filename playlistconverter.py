@@ -15,7 +15,7 @@ except:
     print("Did you set up your Spotify credentials as environment variables?\nhttps://developer.spotify.com/documentation/general/guides/app-settings/")
     sys.exit()
 
-parser = argparse.ArgumentParser(description='Convert a spotify playlist into a csv file for loading into the pyspotify music trivia.')
+parser = argparse.ArgumentParser(description='Convert a spotify playlist into a tsv file (tab-separated) for loading into the pyspotify music trivia.')
 parser.add_argument('--url', help="Full URL to playlist.", type=str)
 parser.add_argument('--id', help="Playlist ID. Portion of the URL after the spotify.com/playlist/{COPY_THIS_PORTION}", type=str)
 parser.add_argument('--shuffle', help="(Optional) Shuffle the order of the tracks in the output file. Add it to shuffle tracks, omit it to maintain playlist track order.", required=False, action="store_true")

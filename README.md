@@ -26,7 +26,7 @@ The converter tool will take in a Spotify playlist (full URL or ID) and create t
 $ python playlistconverter.py -h
 usage: playlistconverter.py [-h] [--url URL] [--id ID] [--shuffle] [--gametype {songartist,lyric,connection}]
 
-Convert a spotify playlist into a csv file for loading into the pyspotify music trivia.
+Convert a spotify playlist into a tsv file (tab-separated) for loading into the pyspotify music trivia.
 
 optional arguments:
   -h, --help            show this help message and exit
