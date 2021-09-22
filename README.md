@@ -24,21 +24,29 @@ Generate a file from a Spotify playlist, enter the start point and duration of e
 The converter tool will take in a Spotify playlist (full URL or ID) and create two tab-separated (`.tsv`) files: a track info file formatted for the web app and an answer file that can be loaded into a spreadsheet editor (Excel, Google Sheets, etc.) for tracking player points.
 ```
 $ python playlistconverter.py -h
-usage: playlistconverter.py [-h] [--url URL] [--id ID] [--shuffle]
+usage: playlistconverter.py [-h] [--url URL] [--id ID] [--shuffle] [--gametype {songartist,lyric,connection}]
 
 Convert a spotify playlist into a csv file for loading into the pyspotify music trivia.
 
 optional arguments:
-  -h, --help  show this help message and exit
-  --url URL   Full URL to playlist.
-  --id ID     Playlist ID. Portion of the URL after the spotify.com/playlist/{COPY_THIS_PORTION}
-  --shuffle   (Optional) Shuffle the order of the tracks in the output file. Add it to shuffle tracks, omit it to maintain playlist track order.
+  -h, --help            show this help message and exit
+  --url URL             Full URL to playlist.
+  --id ID               Playlist ID. Portion of the URL after the spotify.com/playlist/{COPY_THIS_PORTION}
+  --shuffle             (Optional) Shuffle the order of the tracks in the output file. Add it to shuffle tracks, omit it to maintain
+                        playlist track order.
+  --gametype {songartist,lyric,connection}
+                        (Optional) Change the game type. Modifies the generated answer file to include extra columns for different  
+                        game play types: guess the song/artist, finish the lyric, or guess the connection between clues in a        
+                        category. Defaults to songartist if omitted.
 
 # With full playlist URL
 python playlistconverter.py --url https://open.spotify.com/playlist/37i9dQZF1DX1MUPbVKMgJE
 
 # With playlist ID
 python playlistconverter.py --id 37i9dQZF1DX1MUPbVKMgJE
+
+# With playlist ID, shuffle order, and change to lyric game type
+python playlistconverter.py --id 37i9dQZF1DX1MUPbVKMgJE --shuffle --gametype lyric
 ```
 The name of the file will be the playlist name in lowercase with spaces replaced by underscores.
 
@@ -52,11 +60,22 @@ You only need to update the snippet start point, duration, and category for each
 Categories are case-sensitive and the app will output each unique one on a different line with the tracks that use it.
 
 ### `<playlist_name>_answers.tsv` format
+A convenience file if you want to track player's points. Import it into a spreadsheet editor, add/delete columns for players as necessary, and replace the default values below for easier answer tracking if using the `lyric` or `connection` game types.
+
+*Default (`songartist`) game type format*
 |Clue Number|Track Name|Artist|Player 1 Points|Player 2 Points|Player 3 Points|
 |--|--|--|--|--|--|
 |Pre-populated from playlist|Pre-populated from playlist|Pre-populated from playlist|default: empty|default: empty|default: empty|
 
-A convenience file if you want to track player's points. Import it into a spreadsheet editor and add/delete columns for players as necessary. 
+*`lyric` game type format*
+|Clue Number|Track Name|Artist|Lyric|Player 1 Points|Player 2 Points|Player 3 Points|
+|--|--|--|--|--|--|--|
+|Pre-populated from playlist|Pre-populated from playlist|Pre-populated from playlist|default: `REPLACE_WITH_LYRIC`|default: empty|default: empty|default: empty|
+
+*`connection` game type format*
+|Clue Number|Track Name|Artist|Connection|Player 1 Points|Player 2 Points|Player 3 Points|
+|--|--|--|--|--|--|--|
+|Pre-populated from playlist|Pre-populated from playlist|Pre-populated from playlist|default: `REPLACE_WITH_CLUE_CONNECTION`|default: empty|default: empty|default: empty|
 
 ## `app.py` usage
 The `.tsv` file needs to be passed in as an environment variable with the `flask` command>
