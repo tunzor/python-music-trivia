@@ -8,10 +8,23 @@ import os
 import csv
 import sys
 from pathlib import Path
+import socket
 
-from flask import Flask, redirect
+from flask import Flask, redirect, request, session
+from flask_socketio import SocketIO
+from flask_session import Session
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'do_you_want_to_know_a_secret?'
+app.config.from_object(__name__)
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_TYPE'] = 'filesystem'
+server_session = Session()
+server_session.init_app(app)
+socketio = SocketIO(app)
+
+if __name__ == '__main__':
+    socketio.run(app, host='localhost', port=10001)
 
 scope = "user-read-playback-state,user-modify-playback-state"
 sp = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
@@ -31,6 +44,20 @@ unique_cats = []
 for track in tsv_clues:
     if track[5] not in unique_cats:
         unique_cats.append(track[5])
+
+# Not used but might be useful later
+clues_by_cat = {} 
+for clue in tsv_clues:
+    if clue[5] in clues_by_cat:
+        clues_by_cat[clue[5]].append(clue)
+    else:
+        clues_by_cat[clue[5]] = []
+        clues_by_cat[clue[5]].append(clue)
+
+max_cat_length = 0
+for cat in clues_by_cat:
+    if len(clues_by_cat[cat]) > max_cat_length:
+        max_cat_length = len(clues_by_cat[cat])
 
 def get_playlist_tracks(playlist_id):
     pl_id = f"spotify:playlist:{playlist_id}"
@@ -173,3 +200,80 @@ def shuffle_play(id):
         <p>Then go back to the <a href='/'>home page</a> and try again.</p>
         """
     return redirect('/')
+
+@app.route('/answerform')
+def answer_form():
+    output = ""
+    for idx, track in enumerate(tsv_clues):
+        idx += 1
+        output += f"""
+            <div class="col-3">
+                <label for="clue{idx}">Clue {idx}</label>
+                <input type="text" class="form-control clue-answers" id="clue{idx}" placeholder="Enter your answer here">
+            </div>
+        """
+
+    return """
+    <html>
+    <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on('connect', function() {
+            socket.emit('my event', 'I am connected!');
+        });
+        function send_message() {
+            var answers = document.getElementsByClassName('clue-answers')
+            var answer_array = []
+            for (let i = 0; i < answers.length; i++) {
+                answer_array.push(answers[i].value)
+            }
+            console.log(answer_array)
+            socket.emit('button_message', answer_array);
+        }
+    </script>
+    </head>
+    <body>
+    <div class="container">
+    <div class="row justify-content-center">
+    <div class="col text-center">
+    <h1>Answer Form</h1>
+    <p>Enter your answers for the clues below.<br/>You can click the Send Answers button at anytime to sync your answers with the server.</p>
+    <a href="/answers">Answers</a>
+    </div>
+    </div>
+    </div>
+    <div class="form-group container">
+    <div class="row justify-content-center">
+        <button onclick="send_message();" type="submit" class="btn btn-primary col-3">Send Answers</button>
+    </div>
+    <div class="row">""" + output + """
+    </div></div>
+    </body>
+    </html>
+    """
+
+@socketio.on('my event')
+def handle_message(data):
+    host = socket.gethostname()
+    ip = socket.gethostbyname(host)
+    session['player1host'] = ip
+    print(f"Received message {data} from host {host} with ip {ip}")
+    # print(request.remote_addr)
+
+@socketio.on('button_message')
+def button_message(data):
+    print(f"Answers length: {len(data)}")
+    session['player1'] = data
+    session.modified = True
+    print(sys.getsizeof(data))
+    print(data)
+
+@app.route('/answers')
+def answers():
+    return session
+    if 'player1' in session:
+        return str(session.get('player1'))
+    else:
+        return "No player1 session"
