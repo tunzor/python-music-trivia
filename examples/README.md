@@ -14,9 +14,9 @@ Points for identifying either the song, artist, or both OR only for identifying 
 ### [Mix 2](mix2.tsv)
 |Category|Description|
 |--|--|
-|Place Your Bets|Songs or artists/bands with a geographical location in the name.|
-|Ladies' Night|Songs containing a woman's name.|
-|Every Man for Himself|Songs containing a man's name.|
+|Place Your Bets|Song titles or artists/bands with a geographical location in the name.|
+|Ladies' Night|Song titles containing a woman's name.|
+|Every Man for Himself|Song titles containing a man's name.|
 |Let's Get Saxxy|Songs containing a saxophone part. Clues contain only the saxophone part, no lyrics.|
 
 ## Complete the lyric
