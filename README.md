@@ -82,7 +82,7 @@ The `.tsv` file needs to be passed in as an environment variable with the `flask
 ```
 TSV_FILE=<YOUR_FILE>.tsv flask run
 ```
-The web app can then be viewed on `http://localhost:5000`.
+The web app can then be viewed on [`http://localhost:5000`](http://localhost:5000).
 
 The track info `.tsv` file can be pathed to if it's not in the same directory as `app.py`.
 ```
@@ -90,3 +90,24 @@ TSV_FILE=examples/mix1.tsv flask run
 
 TSV_FILE=../mix1.tsv flask run
 ```
+
+## Gameplay
+As the host:
+- Run the webapp with the instructions above in one browser tab.
+- Launch Spotify in another browser tab or device.
+- Open the answers file in your spreadsheet editor to keep track of points if you want.
+- Open a video call with Zoom, Google Meet, etc. and share your computer screen and audio ([Zoom instructions](https://support.zoom.us/hc/en-us/articles/201362643-Sharing-computer-sound-during-screen-sharing)).
+- Host a buzzer room on [Cosmobuzz](https://www.cosmobuzz.net/#/host) and share the room code with the players.
+- Play clues either randomly or by letting players choose.
+
+As a player:
+- Connect to the host's video call.
+- Connect to the host's [Cosmobuzz](https://www.cosmobuzz.net/#/play) room with the room code and your name.
+
+
+### Using Cosmobuzz
+- Each player in the room gets a buzzer button to click and a text field to enter answers.
+- As a host, remember to click the `Reset Buzzers` and `Clear text entrys` after each clue/set of clues. 
+- As a host, lock the players' buzzers while the clues are playing and then unlock them when you want everyone to answer.
+- As a host, enable `Only first Buzz` if you want only the fastest player to be able to answer.
+- As a host, disable `Only first Buzz` to let every player answer and use the buzz order to determine who gets points for that clue/set of clues or award points to all players with the correct answer.

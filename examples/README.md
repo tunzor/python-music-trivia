@@ -23,4 +23,13 @@ Points for identifying either the song, artist, or both OR only for identifying 
 Points for finishing the line of the lyric in the clue.
 
 ## Guess the connection
-Points for identifying how the clues in a category are related.
+Points for identifying how the clues in a category are related. You can add category names as a hint or leave them just as `category`.
+### [Movie Connections 1](movie_connections_trivia_1.tsv)
+|Category|Description|
+|--|--|
+|Blue Velvet|3 songs from a specific movie or movie franchise|
+|Yellow Zoot|3 songs from a specific movie or movie franchise|
+|Marsh Green|3 songs from a specific movie or movie franchise|
+|Black Jack|3 songs from a specific movie or movie franchise|
+|Blue Eyes|3 songs from a specific movie or movie franchise|
+|Royale Orange|3 songs from a specific movie or movie franchise|

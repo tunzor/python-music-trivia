@@ -32,20 +32,6 @@ for track in tsv_clues:
     if track[5] not in unique_cats:
         unique_cats.append(track[5])
 
-# Not used by might be useful later
-clues_by_cat = {} 
-for clue in tsv_clues:
-    if clue[5] in clues_by_cat:
-        clues_by_cat[clue[5]].append(clue)
-    else:
-        clues_by_cat[clue[5]] = []
-        clues_by_cat[clue[5]].append(clue)
-
-max_cat_length = 0
-for cat in clues_by_cat:
-    if len(clues_by_cat[cat]) > max_cat_length:
-        max_cat_length = len(clues_by_cat[cat])
-
 def get_playlist_tracks(playlist_id):
     pl_id = f"spotify:playlist:{playlist_id}"
     offset = 0
@@ -157,9 +143,15 @@ def webapp():
     </script>
     </head>
     <body>
+    <div class="container">
+    <div class="row justify-content-center">
+    <div class="col text-center">
     <h1>Playlist: """ + playlist_title + """</h1>
     <p>Click on any clue to start playback. Clue links are disabled until playback is finished.</p>
     <p>The currently playing clue will be highlighted in <span style="background-color: #c2ffbd;">green</span>.</p>
+    </div>
+    </div>
+    </div>
     <div class="container"><div class="row align-items-start">
     """ + generate_html() +
     """
